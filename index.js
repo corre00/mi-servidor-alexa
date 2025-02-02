@@ -4,6 +4,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+// Ruta para manejar las solicitudes de Alexa
 app.post('/alexa', (req, res) => {
     const requestType = req.body.request.type;
 
@@ -23,6 +24,7 @@ app.post('/alexa', (req, res) => {
     res.json({ error: 'Intención no reconocida' });
 });
 
+// Iniciar el servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);

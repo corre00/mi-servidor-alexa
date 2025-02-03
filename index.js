@@ -1,31 +1,31 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
+app.use(express.json()); // Usa el middleware integrado de Express
 
-app.use(bodyParser.json());
-
-// Ruta para manejar las solicitudes de Alexa
 app.post('/alexa', (req, res) => {
-    const requestType = req.body.request.type;
+  try {
+    const requestType = req.body.request?.type;
 
     if (requestType === 'LaunchRequest') {
-        return res.json({
-            version: '1.0',
-            response: {
-                outputSpeech: {
-                    type: 'PlainText',
-                    text: '¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?'
-                },
-                shouldEndSession: false
-            }
-        });
+      return res.json({
+        version: "1.0",
+        response: {
+          outputSpeech: {
+            type: "PlainText",
+            text: "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?"
+          },
+          shouldEndSession: false
+        }
+      });
     }
-
-    res.json({ error: 'Intención no reconocida' });
+    res.status(400).json({ error: "Tipo de solicitud no soportado" });
+  } catch (error) {
+    console.error("Error interno:", error);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
 });
 
-// Iniciar el servidor
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Servidor escuchando en el puerto ${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en puerto ${PORT}`);
 });

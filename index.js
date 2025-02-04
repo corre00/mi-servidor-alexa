@@ -19,6 +19,37 @@ app.post('/alexa', (req, res) => {
         }
       });
     }
+
+    if (requestType === 'IntentRequest') {
+      const intentName = req.body.request.intent.name;
+
+      if (intentName === 'HelloIntent') {
+        return res.json({
+          version: "1.0",
+          response: {
+            outputSpeech: {
+              type: "PlainText",
+              text: "¡Hola! ¿Cómo estás?"
+            },
+            shouldEndSession: false
+          }
+        });
+      }
+
+      if (intentName === 'GoodbyeIntent') {
+        return res.json({
+          version: "1.0",
+          response: {
+            outputSpeech: {
+              type: "PlainText",
+              text: "¡Adiós! Que tengas un buen día."
+            },
+            shouldEndSession: true
+          }
+        });
+      }
+    }
+
     res.status(400).json({ error: "Tipo de solicitud no soportado" });
   } catch (error) {
     console.error("Error interno:", error);

@@ -4,7 +4,7 @@
   "description": "Servidor para mi skill de Alexa",
   "main": "index.js",
   "scripts": {
-    "start": "node api/alexa.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.18.2"

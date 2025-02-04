@@ -8,6 +8,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.4.1",
     "vue": "^3.0.0"
   },
   "devDependencies": {

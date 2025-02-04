@@ -13,7 +13,7 @@ app.post('/alexa', (req, res) => {
         response: {
           outputSpeech: {
             type: "PlainText",
-            text: "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?"
+            text: "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte? ¿Listo para una nueva aventura?"
           },
           shouldEndSession: false
         }
@@ -29,7 +29,7 @@ app.post('/alexa', (req, res) => {
           response: {
             outputSpeech: {
               type: "PlainText",
-              text: "¡Hola! ¿Cómo estás?"
+              text: "¡Hola! ¿Cómo estás? ¿Listo para empezar?"
             },
             shouldEndSession: false
           }
@@ -42,7 +42,33 @@ app.post('/alexa', (req, res) => {
           response: {
             outputSpeech: {
               type: "PlainText",
-              text: "¡Adiós! Que tengas un buen día."
+              text: "¡Adiós! Recuerda, siempre estoy aquí para ti. ¡Que tengas un excelente día!"
+            },
+            shouldEndSession: true
+          }
+        });
+      }
+
+      if (intentName === 'AMAZON.HelpIntent') {
+        return res.json({
+          version: "1.0",
+          response: {
+            outputSpeech: {
+              type: "PlainText",
+              text: "Puedes pedirme que haga varias cosas. Simplemente di lo que necesitas."
+            },
+            shouldEndSession: false
+          }
+        });
+      }
+
+      if (intentName === 'AMAZON.CancelIntent' || intentName === 'AMAZON.StopIntent') {
+        return res.json({
+          version: "1.0",
+          response: {
+            outputSpeech: {
+              type: "PlainText",
+              text: "Entendido, cancelando. ¡Hasta luego!"
             },
             shouldEndSession: true
           }

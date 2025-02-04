@@ -1,9 +1,15 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
-      "src": "/alexa",
-      "dest": "/index.js"
+      "src": "/(.*)",
+      "dest": "frontend/$1"
     }
   ]
 }

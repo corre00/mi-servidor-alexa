@@ -2,6 +2,10 @@
   "version": 2,
   "routes": [
     {
+      "src": "/alexa",
+      "dest": "index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "frontend/dist/$1"
     }

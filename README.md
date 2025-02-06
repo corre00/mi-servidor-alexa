@@ -1,15 +1,31 @@
 # mi-servidor-alexa
-"Servidor para mi skill de Alexa"
+Servidor para mi skill de Alexa
 
 Este repositorio contiene el código del servidor para una skill de Alexa.
 
+## Características del servidor
+
+El servidor incluye las siguientes características:
+- Uso de middlewares `morgan` para el logging y `body-parser` para el manejo de cuerpos de solicitudes.
+- Integración con Twilio para manejar webhooks de Twilio.
 
 ## Código del servidor
 
 ```javascript
 const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const { WebhookClient } = require('dialogflow-fulfillment');
+const twilio = require('twilio');
+
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true })); // Soportar cuerpos codificados
+app.use(morgan('dev')); // Logging
+
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
 
 app.post('/api/alexa', (req, res) => {
     const requestType = req.body.request.type;
@@ -51,12 +67,12 @@ app.post('/api/alexa', (req, res) => {
                     }
                 });
                 break;
-            case 'LaunchRequest':
+            case 'HolaIntent':
                 res.json({
                     response: {
                         outputSpeech: {
                             type: 'PlainText',
-                            text: 'Bienvenido a mi asistente. ¿En qué puedo ayudarte?'
+                            text: 'Hola'
                         },
                         shouldEndSession: false
                     }
@@ -79,7 +95,19 @@ app.post('/api/alexa', (req, res) => {
     }
 });
 
-const port = process.env.PORT || 3000;
+app.post('/twiliowebhook', (req, res, next) => {
+    let response = new twilio.twiml.MessagingResponse();
+
+    console.log('twiliowebhook');
+    console.log(req.body);
+
+    // todo: call dialogflow
+
+    response.message('response from custom tier');
+    res.send(response.toString());
+});
+
+const port = 3000;
 app.listen(port, () => {
-    console.log(`Servidor escuchando en el puerto ${port}`);
+    console.log('Servidor escuchando en el puerto 3000!');
 });

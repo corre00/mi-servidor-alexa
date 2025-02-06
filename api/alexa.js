@@ -53,6 +53,17 @@ app.post('/api/alexa', (req, res) => {
                     }
                 });
                 break;
+            case 'HolaIntent':  // Nuevo intent agregado aquí
+                res.json({
+                    response: {
+                        outputSpeech: {
+                            type: 'PlainText',
+                            text: 'Hola'
+                        },
+                        shouldEndSession: false
+                    }
+                });
+                break;
             default:
                 res.json({
                     response: {

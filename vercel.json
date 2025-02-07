@@ -3,7 +3,7 @@
   "routes": [
     {
       "src": "/alexa",
-      "dest": "index.js"
+      "dest": "api/alexa.js"
     },
     {
       "src": "/(.*)",

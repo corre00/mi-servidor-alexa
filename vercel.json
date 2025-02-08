@@ -5,10 +5,6 @@
       "src": "/api/alexa",
       "dest": "/api/alexa.js",
       "methods": ["POST"]
-    },
-    {
-      "src": "/(.*)", 
-      "status": 404
     }
   ]
 }

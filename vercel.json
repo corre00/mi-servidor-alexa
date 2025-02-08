@@ -10,10 +10,6 @@
     {
       "src": "/api/alexa",
       "dest": "/api/alexa.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/alexa.js"
     }
   ]
 }

@@ -4,29 +4,32 @@ const Alexa = require('ask-sdk-core');
 const app = express();
 app.use(express.json());
 
-// Configuración de Alexa
+// Configuración completa de Alexa
 const skill = Alexa.SkillBuilders.custom()
   .addRequestHandlers({
-    canHandle(handlerInput) {
-      return true; // Manejar todas las solicitudes
-    },
-    handle(handlerInput) {
+    canHandle: () => true,
+    handle: (handlerInput) => {
       return handlerInput.responseBuilder
-        .speak('¡Hola desde mi skill de Alexa!')
+        .speak('¡Hola desde Vercel!')
         .getResponse();
     }
   })
+  .withApiClient(new Alexa.DefaultApiClient())
   .create();
 
-// Ruta principal de Alexa
-app.post('/api/alexa', (req, res) => {
-  skill.invoke(req.body)
-    .then(response => res.json(response))
-    .catch(error => {
-      console.error(error);
-      res.status(500).send('Error');
-    });
+// Ruta adaptada para Vercel
+app.post('/api/alexa', async (req, res) => { // <-- Ahora con /api/
+  try {
+    const response = await skill.invoke(req.body);
+    res.json(response);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(400).json({ error: 'Solicitud inválida de Alexa' });
+  }
 });
+
+// Exportación especial para Vercel
+module.exports = app;
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;

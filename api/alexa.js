@@ -10,7 +10,7 @@ const skill = Alexa.SkillBuilders.custom()
     canHandle: () => true,
     handle: (handlerInput) => {
       return handlerInput.responseBuilder
-        .speak('¡Hola soy tu asistente ¿enque puedo ayudarte?')
+        .speak('¡Hola soy Yo tu asistente ¿Como estas? ¿enque puedo ayudarte?')
         .getResponse();
     }
   })

@@ -1,87 +1,44 @@
-const express = require('express');
-const app = express();
-app.use(express.json());
+const { createServer } = require('http');
+const Alexa = require('ask-sdk-core');
 
-app.post('/api/alexa', (req, res) => {
-    const requestType = req.body.request.type;
-
-    if (requestType === 'LaunchRequest') {
-        res.json({
-            response: {
-                outputSpeech: {
-                    type: 'PlainText',
-                    text: 'Bienvenido a mi asistente. ¿En qué puedo ayudarte?'
-                },
-                shouldEndSession: false
-            }
-        });
-    } else if (requestType === 'IntentRequest') {
-        const intentName = req.body.request.intent.name;
-
-        switch (intentName) {
-            case 'AMAZON.CancelIntent':
-            case 'AMAZON.StopIntent':
-                res.json({
-                    response: {
-                        outputSpeech: {
-                            type: 'PlainText',
-                            text: 'Adiós'
-                        },
-                        shouldEndSession: true
-                    }
-                });
-                break;
-            case 'AMAZON.HelpIntent':
-                res.json({
-                    response: {
-                        outputSpeech: {
-                            type: 'PlainText',
-                            text: 'Puedes decirme que haga algo'
-                        },
-                        shouldEndSession: false
-                    }
-                });
-                break;
-            case 'LaunchRequest':
-                res.json({
-                    response: {
-                        outputSpeech: {
-                            type: 'PlainText',
-                            text: 'Bienvenido a mi asistente. ¿En qué puedo ayudarte?'
-                        },
-                        shouldEndSession: false
-                    }
-                });
-                break;
-            case 'HolaIntent':  // Nuevo intent agregado aquí
-                res.json({
-                    response: {
-                        outputSpeech: {
-                            type: 'PlainText',
-                            text: 'Hola'
-                        },
-                        shouldEndSession: false
-                    }
-                });
-                break;
-            default:
-                res.json({
-                    response: {
-                        outputSpeech: {
-                            type: 'PlainText',
-                            text: 'Lo siento, no entiendo esa solicitud'
-                        },
-                        shouldEndSession: false
-                    }
-                });
-                break;
-        }
-    } else {
-        res.status(400).send('Tipo de solicitud no soportado');
+const skill = Alexa.SkillBuilders.custom()
+  .addRequestHandlers(
+    {
+      canHandle(handlerInput) {
+        return true;
+      },
+      handle(handlerInput) {
+        return handlerInput.responseBuilder
+          .speak('Hola desde mi skill de Alexa!')
+          .getResponse();
+      }
     }
+  )
+  .create();
+
+const server = createServer(async (req, res) => {
+  if (req.url === '/api/alexa' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      skill.invoke(JSON.parse(body))
+        .then(response => {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(response));
+        })
+        .catch(error => {
+          console.error(error);
+          res.writeHead(500);
+          res.end();
+        });
+    });
+  } else {
+    res.writeHead(404);
+    res.end();
+  }
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Servidor escuchando en el puerto ${port}`);
+server.listen(port, () => {
+  console.log(`Servidor ejecutándose en puerto ${port}`);
 });

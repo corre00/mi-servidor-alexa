@@ -10,7 +10,7 @@
     {
       "src": "/api/alexa",
       "dest": "/api/alexa.js",
-      "methods": ["POST"]  // <--- ¡Esto es crucial!
+      "methods": ["POST"]
     }
   ]
 }

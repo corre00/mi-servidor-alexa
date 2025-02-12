@@ -1,0 +1,22 @@
+{
+    "dialogSets": [
+        {
+            "name": "SaludoDialog",
+            "dialogs": [
+                {
+                    "name": "SaludoInicial",
+                    "steps": [
+                        {
+                            "type": "UserUtterance",
+                            "utterance": "Hola"
+                        },
+                        {
+                            "type": "AlexaResponse",
+                            "response": "¡Hola! ¿En qué puedo ayudarte hoy?"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
